@@ -1,9 +1,24 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, flash, redirect, session
 from util import json_response
+import os
+from datetime import timedelta
+
 
 import queires
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'dev')
+app.permanent_session_lifetime = timedelta(days=1)
+
+
+def login_required(function):
+    def wrapper(*args, **kwargs):
+        if 'username' not in session:
+            flash("You must be logged in to do this!")
+            return redirect(url_for('login'))
+        return function(*args, **kwargs)
+    wrapper.__name__ = function.__name__
+    return wrapper
 
 
 @app.route("/")
@@ -31,6 +46,24 @@ def get_cards_for_board(board_id: int):
     :param board_id: id of the parent board
     """
     return queires.get_cards_for_board(board_id)
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    # TODO - user register
+    pass
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    # TODO - user login
+    pass
+
+
+@app.route("/logout")
+def logout():
+    # TODO - user logout
+    pass
 
 
 def main():
