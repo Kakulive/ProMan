@@ -1,4 +1,5 @@
 import data_manager
+import util
 
 
 def get_card_status(status_id):
@@ -41,3 +42,16 @@ def get_cards_for_board(board_id):
         , {"board_id": board_id})
 
     return matching_cards
+
+
+def save_user(username, email, hashed_password):
+    registration_time = str(util.get_current_time())
+    data_manager.execute_update(
+        """
+        INSERT INTO users
+        (username, password, email, submission_time)
+        VALUES 
+        (%(username)s, %(password)s, %(email)s, %(submission_time)s)
+        ;
+        """
+        , {"username": username, "password": hashed_password, "email": email, "submission_time": registration_time})
