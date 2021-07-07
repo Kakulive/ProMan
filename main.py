@@ -22,7 +22,7 @@ def login_required(function):
     return wrapper
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
     """
     This is a one-pager which shows all the boards and cards
@@ -76,7 +76,9 @@ def logout():
 
 
 def main():
-    app.run(debug=True)
+    app.run(
+        debug=True
+    )
 
     # Serving the favicon
     with app.app_context():
