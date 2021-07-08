@@ -1,0 +1,58 @@
+<div id="login">
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <form id="login-form" class="form" action="" method="POST">
+                        <h3 class="text-center text-info">Login</h3>
+                        <div class="form-group">
+                            <label for="loginEmail" class="text-info">Email:</label><br>
+                            <input type="email" name="loginEmail" id="loginEmail" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword" class="text-info">Password:</label><br>
+                            <input type="password" name="loginPassword" id="loginPassword" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" name='loginButton' id='loginButton'
+                                    class="btn btn-success">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#loginButton').on("click", function(){
+            let email = $('#loginEmail').val();
+            let password = $('#loginPassword').val();
+            if( password !== '' && email !== '' )
+            {
+                $.ajax({
+                    url:"/login",
+                    method:"POST",
+                    data: {password:password, email:email},
+                    success:function(data)
+                    {
+                        if(data === 'No-data')
+                        {
+                            alert("Invalid Email Or Password!");
+                        }
+                        else
+                        {
+                            $('#loginModal').hide();
+                            location.reload();
+                        }
+                    }
+                });
+            }
+            else
+            {
+                alert("All Fields are required");
+            }
+        });
+    });
+</script>
