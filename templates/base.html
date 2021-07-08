@@ -51,7 +51,8 @@
 
     {% else %}
 
-        <a class="btn btn-outline-success m-1" href="{{ url_for('login') }}" role="button">Login</a>
+        <a class="btn btn-outline-success m-1" role="button" data-bs-toggle="modal"
+           data-bs-target="#loginModal" onclick="activateLoginModal()">Login</a>
         <a class="btn btn-outline-success m-1" role="button" data-bs-toggle="modal"
            data-bs-target="#registerModal" onclick="activateRegisterModal()">Register</a>
 

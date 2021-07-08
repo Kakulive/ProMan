@@ -42,8 +42,42 @@
         <div class="control-group">
             <!-- Button -->
             <div class="controls">
-                <button type="submit" class="btn btn-success">Register</button>
+                <button type="button" name='registerButton' id='registerButton' class="btn btn-success">Register</button>
             </div>
         </div>
     </fieldset>
 </form>
+
+<script>
+    $(document).ready(function(){
+        $('#registerButton').click(function(){
+            let username = $('#username').val();
+            let email = $('#email').val();
+            let password = $('#password').val();
+            if( username !== '' && password !== '' && email !== '' )
+            {
+                $.ajax({
+                    url:"/register",
+                    method:"POST",
+                    data: {username:username, password:password, email:email},
+                    success:function(data)
+                    {
+                        if(data === 'No-data')
+                        {
+                            alert("Invalid Email Or Password!");
+                        }
+                        else
+                        {
+                            $('#registerModal').hide();
+                            location.reload();
+                        }
+                    }
+                });
+            }
+            else
+            {
+                alert("All Fields are required");
+            }
+        });
+    });
+</script>

@@ -57,16 +57,19 @@ def register():
         password = request.form['password']
         hashed_password = hash_password(password)
         queries.save_user(username, email, hashed_password)
-        return redirect(url_for("index"))
-
     return render_template("register.html")
-    pass
+
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    # TODO - user login
-    pass
+    if request.method == "POST":
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        hashed_password = hash_password(password)
+        queries.save_user(username, email, hashed_password)
+    return render_template("login.html")
 
 
 @app.route("/logout")
