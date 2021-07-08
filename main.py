@@ -5,8 +5,6 @@ import os
 from datetime import timedelta
 
 
-import queries
-
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev')
 app.permanent_session_lifetime = timedelta(days=1)
@@ -60,22 +58,25 @@ def register():
     return render_template("register.html")
 
 
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        hashed_password = hash_password(password)
-        queries.save_user(username, email, hashed_password)
+        if queries.check_user_login(email, password):
+            session['email'] = email
+            session['username'] = queries.get_user_username(email)
+            flash(f"You were successfully logged in, {session['username']}")
+        else:
+            flash('Login failed. Try again!')
+
     return render_template("login.html")
 
 
 @app.route("/logout")
 def logout():
-    # TODO - user logout
-    pass
+    session.clear()
+    return redirect(url_for('index'))
 
 
 def main():

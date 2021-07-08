@@ -1,3 +1,4 @@
+import bcrypt
 import data_manager
 import util
 
@@ -13,8 +14,7 @@ def get_card_status(status_id):
         SELECT * FROM statuses s
         WHERE s.id = %(status_id)s
         ;
-        """
-        , {"status_id": status_id})
+        """, {"status_id": status_id})
 
     return status
 
@@ -38,8 +38,7 @@ def get_cards_for_board(board_id):
         SELECT * FROM cards
         WHERE cards.board_id = %(board_id)s
         ;
-        """
-        , {"board_id": board_id})
+        """, {"board_id": board_id})
 
     return matching_cards
 
@@ -53,5 +52,28 @@ def save_user(username, email, hashed_password):
         VALUES 
         (%(username)s, %(password)s, %(email)s, %(submission_time)s)
         ;
+        """, {"username": username, "password": hashed_password, "email": email, "submission_time": registration_time})
+
+
+def check_user_login(email, password):
+    user_password = data_manager.execute_select(
         """
-        , {"username": username, "password": hashed_password, "email": email, "submission_time": registration_time})
+        SELECT password
+        FROM users
+        WHERE email = %(email)s
+        ;
+        """, {"email": email})
+
+    return bcrypt.checkpw(password.encode('UTF-8'), user_password[0]['password'].encode('UTF-8'))
+
+
+def get_user_username(email):
+    user_username = data_manager.execute_select(
+        """
+        SELECT username
+        FROM users
+        WHERE email = %(email)s
+        ;
+        """, {"email": email})
+
+    return user_username[0]['username']

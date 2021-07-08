@@ -45,9 +45,9 @@
     {% if 'username' in session %}
 
         <div class="d-inline mr-auto">
-            <span class="navbar-brand mb-0 h1">Hello, {{ session['user'] }}!</span>
+            <span class="navbar-brand mb-0 h1">Hello, {{ session['username'] }}!</span>
         </div>
-        <a class="btn btn-outline-success m-1" href="{{ url_for('logout') }}" role="button">Register</a>
+        <a class="btn btn-outline-success m-1" href="{{ url_for('logout') }}" role="button">Logout</a>
 
     {% else %}
 
