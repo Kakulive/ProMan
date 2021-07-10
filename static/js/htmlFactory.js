@@ -20,13 +20,15 @@ export function htmlFactory(template) {
 
 function boardBuilder(board) {
     return `<div class="board-container">
-                <section class="board" data-board-id=${board.id}>
+                <section class="board" data-board-id="${board.id}">
                     <div class="board-header">
                         <span class="board-title">${board.title}</span>
                         <button class="board-add">Add Card</button>
                         <button class="board-toggle" data-board-id="${board.id}"><i class="fas fa-chevron-down"></i></button>
                     </div>
-                </section>`
+                    <div class="board-columns" data-board-id="${board.id}"></div>
+                </section>
+             </div> `
 }
 
 function cardBuilder(card) {
@@ -38,7 +40,7 @@ function cardBuilder(card) {
 
 function columnBuilder(boardId, column) {
     return `<div class="board-column">
-                    <div class="board-column-title">${column.id}</div>
+                    <div class="board-column-title">${column.status}</div>
                     <div class="board${boardId}-column-content" data-column-id="${column.id}"></div>
             </div>`
 }

@@ -47,7 +47,10 @@ def get_cards_for_board(board_id):
 def get_columns_for_board(board_id):
     matching_columns = data_manager.execute_select(
         """
-        SELECT * FROM columns
+        SELECT columns.id, statuses.status
+        FROM columns
+        JOIN statuses
+        ON columns.status_id = statuses.id
         WHERE columns.board_id = %(board_id)s
         ;
         """, {"board_id": board_id})
