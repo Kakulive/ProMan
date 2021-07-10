@@ -16,6 +16,10 @@ export let dataHandler = {
         let response = await apiGet(`/get-cards/${boardId}`)
         return response
     },
+    getColumnsByBoardId: async function (boardId) {
+        let response = await apiGet(`/get-columns/${boardId}`)
+        return response
+    },
     getCard: async function (cardId) {
         // the card is retrieved and then the callback function is called with the card
     },
