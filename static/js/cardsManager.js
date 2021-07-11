@@ -7,14 +7,17 @@ export let cardsManager = {
         const cards = await dataHandler.getCardsByBoardId(boardId);
         for (let card of cards) {
             const cardBuilder = htmlFactory(htmlTemplates.card);
-            const content = cardBuilder(card)
+            const content = cardBuilder(card);
             domManager.addChild(`.board${boardId}-column-content[data-column-id="${card.column_id}"]`,
-                content)
+                content);
             domManager.addEventListener(`.card-remove[id="removeCard${card.id}"]`,
-                "click", deleteButtonHandler)
+                "click", deleteButtonHandler);
+            domManager.addEventListener(`.card-title[id="cardTitle${card.id}"]`,
+                "click", updateCardTitle);
         }
     },
 }
+
 
 function deleteButtonHandler(clickEvent) {
     const cardToDelete = clickEvent.target.parentNode;
@@ -23,3 +26,27 @@ function deleteButtonHandler(clickEvent) {
     dataHandler.deleteCard(cardID);
 }
 
+
+function updateCardTitle(clickEvent) {
+    const titleToUpdate = clickEvent.target;
+    const cardID = titleToUpdate.id.slice(9);
+    const originalTitle = titleToUpdate.innerText;
+    let userInput = document.createElement("input");
+    userInput.placeholder = originalTitle;
+    titleToUpdate.innerHTML= "";
+    titleToUpdate.appendChild(userInput);
+
+    userInput.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            const newTitleText = userInput.value;
+            titleToUpdate.innerHTML = newTitleText;
+            dataHandler.updateCardTitle(cardID, newTitleText)
+        }
+        else if (event.keyCode === 27) {
+            titleToUpdate.innerHTML= originalTitle;
+            }
+
+    })
+
+}
