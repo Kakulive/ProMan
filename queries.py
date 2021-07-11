@@ -143,3 +143,11 @@ def save_card(board_id, card_title, column_id):
         (%(board_id)s, %(status_id)s, %(title)s, %(card_order)s, %(column_id)s); 
         """, {"board_id": int(board_id), "status_id": status_id, "title": card_title,
               "card_order": max_card_order, "column_id": int(column_id)})
+
+
+def delete_card(card_id):
+    data_manager.execute_update(
+        """
+        DELETE from cards
+        WHERE id = %(card_id)s
+        """, {"card_id": card_id})

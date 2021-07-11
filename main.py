@@ -106,6 +106,12 @@ def get_first_column_from_board(board_id):
     return queries.get_first_column_from_board(board_id)
 
 
+@app.route("/delete-card/<card_id>", methods=["GET", "POST"])
+@json_response
+def delete_card(card_id):
+    return queries.delete_card(card_id)
+
+
 def main():
     app.run(
         debug=True

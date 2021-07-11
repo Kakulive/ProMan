@@ -8,13 +8,18 @@ export let cardsManager = {
         for (let card of cards) {
             const cardBuilder = htmlFactory(htmlTemplates.card);
             const content = cardBuilder(card)
-            domManager.addChild(`.board${boardId}-column-content[data-column-id="${card.column_id}"]`, content)
-            domManager.addEventListener(`.card[data-card-id="${card.id}"]`,
+            domManager.addChild(`.board${boardId}-column-content[data-column-id="${card.column_id}"]`,
+                content)
+            domManager.addEventListener(`.card-remove[id="removeCard${card.id}"]`,
                 "click", deleteButtonHandler)
         }
     },
 }
 
 function deleteButtonHandler(clickEvent) {
+    const cardToDelete = clickEvent.target.parentNode;
+    const cardID = cardToDelete.id.slice(10);
+    cardToDelete.parentNode.remove();
+    dataHandler.deleteCard(cardID);
 }
 
