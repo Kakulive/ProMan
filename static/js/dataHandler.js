@@ -38,6 +38,10 @@ export let dataHandler = {
     getFirstColumnFromBoard: async function (boardId) {
         let response = await apiGet(`/get-first-column-from-board/${boardId}`);
         return response
+    },
+    deleteCard: async function (cardID) {
+        let response = await apiGet(`/delete-card/${cardID}`)
+        return response
     }
 };
 

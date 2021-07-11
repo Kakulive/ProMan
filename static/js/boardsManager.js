@@ -40,8 +40,8 @@ async function createCard(clickEvent) {
     const content = cardBuilder(tempCard);
     domManager.addChild(`.board${boardId}-column-content[data-column-id="${tempCard.column_id}"]`,
                 content)
-    // domManager.addEventListener(`.card[data-card-id="${tempCard.id}"]`, "click",
-    //     cardsManager.deleteButtonHandler)
+    // domManager.addEventListener(`.card[data-card-id="${tempCard.id}"]`,
+    //             "click", cardsManager.deleteButtonHandler)
 
     let userInput = document.createElement("input");
     userInput.setAttribute('id',tempCard.id)
