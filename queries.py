@@ -92,3 +92,54 @@ def get_user_username(email):
         """, {"email": email})
 
     return user_username[0]['username']
+
+
+def get_first_column_from_board(board_id):
+    user_username = data_manager.execute_select(
+        """
+        SELECT id
+        FROM columns
+        WHERE board_id = %(board_id)s
+        ORDER BY column_order
+        LIMIT 1
+        ;
+        """, {"board_id": board_id})
+
+    return user_username[0]['id']
+
+
+def get_latest_card_id():
+    return data_manager.execute_select(
+        """
+        SELECT max(id)
+        FROM cards
+        ;
+        """
+    )[0]['max']
+
+
+def save_card(board_id, card_title, column_id):
+    max_card_order = data_manager.execute_select(
+        """
+        SELECT MAX(card_order)
+        FROM cards
+        WHERE board_id = %(board_id)s and column_id = %(column_id)s;
+        """, {"board_id": board_id, "column_id": column_id})[0]['max']
+    max_card_order += 1
+
+    status_id = data_manager.execute_select(
+        """
+        SELECT status_id
+        FROM cards
+        WHERE board_id = %(board_id)s and column_id = %(column_id)s
+        LIMIT 1;
+        """, {"board_id": board_id, "column_id": column_id})[0]['status_id']
+
+    data_manager.execute_update(
+        """
+        INSERT INTO cards 
+        (board_id, status_id, title, card_order, column_id)
+        VALUES 
+        (%(board_id)s, %(status_id)s, %(title)s, %(card_order)s, %(column_id)s); 
+        """, {"board_id": int(board_id), "status_id": status_id, "title": card_title,
+              "card_order": max_card_order, "column_id": int(column_id)})
