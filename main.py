@@ -89,6 +89,23 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route("/create-new-card/<board_id>/<card_title>/<column_id>", methods=["GET", "POST"])
+def create_new_card(board_id, card_title, column_id):
+    queries.save_card(board_id, card_title, column_id)
+
+
+@app.route("/get-latest-card-id")
+@json_response
+def get_latest_card_id():
+    return queries.get_latest_card_id()
+
+
+@app.route("/get-first-column-from-board/<board_id>")
+@json_response
+def get_first_column_from_board(board_id):
+    return queries.get_first_column_from_board(board_id)
+
+
 def main():
     app.run(
         debug=True
