@@ -20,10 +20,22 @@ export let boardsManager = {
 }
 
 async function showHideButtonHandler(clickEvent) {
-    const boardId = clickEvent.currentTarget.dataset.boardId;
-    await columnsManager.loadColumns(boardId);
-    await cardsManager.loadCards(boardId);
-    loadDraggableItems();
+    let columns_tag = clickEvent.currentTarget.parentNode.nextElementSibling
+    if (columns_tag.hasChildNodes() === false) {
+        const boardId = clickEvent.currentTarget.dataset.boardId;
+        await columnsManager.loadColumns(boardId);
+        await cardsManager.loadCards(boardId);
+        loadDraggableItems();
+    } else {
+        removeAllChildNodes(columns_tag)
+    }
+}
+
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
 }
 
 
@@ -40,9 +52,9 @@ async function createCard(clickEvent) {
     const cardBuilder = htmlFactory(htmlTemplates.card);
     const content = cardBuilder(tempCard);
     domManager.addChild(`.board${boardId}-column-content[data-column-id="${tempCard.column_id}"]`,
-                content)
+        content)
     domManager.addEventListener(`.card-remove[id="removeCard${tempCard.id}"]`,
-                "click", deleteButtonHandler);
+        "click", deleteButtonHandler);
 
     let userInput = document.createElement("input");
     userInput.setAttribute('id',tempCard.id)
