@@ -59,9 +59,10 @@ async function apiGet(url) {
     }
 }
 
-async function apiPost(url) {
+async function apiPost(url, data) {
     let response = await fetch(url, {
-        method: 'POST',
+        method: 'POST'
+        // body: {json}
     })
 }
 
