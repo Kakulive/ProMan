@@ -32,7 +32,7 @@ function boardBuilder(board) {
 }
 
 function cardBuilder(card) {
-    return `<div class="card" data-card-id="${card.id}" id="card${card.id}">
+    return `<div class="card" data-card-id="${card.id}" id="card${card.id}" draggable="true">
                 <div class="card-remove" id="removeCard${card.id}"><i class="fas fa-trash-alt"></i></div>
                 <div class="card-title" id="cardTitle${card.id}">${card.title}</div>
             </div>`;
@@ -44,13 +44,3 @@ function columnBuilder(boardId, column) {
                     <div class="board${boardId}-column-content" data-column-id="${column.id}"></div>
             </div>`
 }
-
-
-// example board
-//          `<div class="board-container">
-//                 <div class="board" data-board-id=${board.id}>${board.title}</div>
-//                 <button class="toggle-board-button" data-board-id="${board.id}">Show Cards</button>
-//           </div>`;
-
-// example card
-// `<div class="card" data-card-id="${card.id}">${card.title}</div>`
