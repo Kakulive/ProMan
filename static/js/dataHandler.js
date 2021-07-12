@@ -27,8 +27,12 @@ export let dataHandler = {
         // creates new board, saves it and calls the callback function with its data
     },
     createNewCard: async function (cardTitle, boardId, columnId) {
-        let response = await apiPost(`/create-new-card/${boardId}/${cardTitle}/${columnId}`);
-        return response
+        let body_content = {
+            "card_title": cardTitle,
+            "board_id": boardId,
+            "column_id": columnId
+        };
+        let response = await apiPost(`/create-new-card`, body_content);
         // creates new card, saves it and calls the callback function with its data
     },
     getLatestCardId: async function () {
@@ -40,12 +44,14 @@ export let dataHandler = {
         return response
     },
     deleteCard: async function (cardID) {
-        let response = await apiGet(`/delete-card/${cardID}`)
-        return response
+        let response = await apiDelete(`/delete-card/${cardID}`)
     },
     updateCardTitle: async function (cardID, newTitleText) {
-        let response = await apiGet(`/update-card-title/${cardID}/${newTitleText}`)
-        return response
+        let body_content = {
+            "card_id": cardID,
+            "new_title_text": newTitleText,
+        };
+        let response = await apiPut(`/update-card-title`, body_content)
     }
 };
 
@@ -59,15 +65,28 @@ async function apiGet(url) {
     }
 }
 
-async function apiPost(url, data) {
+async function apiPost(url, body_content) {
     let response = await fetch(url, {
-        method: 'POST'
-        // body: {json}
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body_content),
     })
 }
 
 async function apiDelete(url) {
+    let response = await fetch(url, {
+        method: 'DELETE',
+    })
 }
 
-async function apiPut(url) {
+async function apiPut(url, body_content) {
+    let response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body_content),
+    })
 }

@@ -22,38 +22,24 @@ def login_required(function):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    """
-    This is a one-pager which shows all the boards and cards
-    """
     return render_template('index.html')
 
 
 @app.route("/get-boards")
 @json_response
 def get_boards():
-    """
-    All the boards
-    """
     return queries.get_boards()
 
 
 @app.route("/get-cards/<int:board_id>")
 @json_response
 def get_cards_for_board(board_id: int):
-    """
-    All cards that belongs to a board
-    :param board_id: id of the parent board
-    """
     return queries.get_cards_for_board(board_id)
 
 
 @app.route("/get-columns/<int:board_id>")
 @json_response
 def get_columns_for_board(board_id: int):
-    """
-    All cards that belongs to a board
-    :param board_id: id of the parent board
-    """
     return queries.get_columns_for_board(board_id)
 
 
@@ -89,8 +75,12 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/create-new-card/<board_id>/<card_title>/<column_id>", methods=["GET", "POST"])
-def create_new_card(board_id, card_title, column_id):
+@app.route("/create-new-card", methods=["POST"])
+def create_new_card():
+    data = request.get_json()
+    board_id = int(data['board_id'])
+    card_title = data['card_title']
+    column_id = data['column_id']
     queries.save_card(board_id, card_title, column_id)
 
 
@@ -106,16 +96,17 @@ def get_first_column_from_board(board_id):
     return queries.get_first_column_from_board(board_id)
 
 
-@app.route("/delete-card/<card_id>", methods=["GET", "POST"])
-@json_response
+@app.route("/delete-card/<card_id>", methods=["DELETE"])
 def delete_card(card_id):
-    return queries.delete_card(card_id)
+    queries.delete_card(card_id)
 
 
-@app.route("/update-card-title/<card_id>/<new_title_text>", methods=["GET", "POST"])
-@json_response
-def update_card_title(card_id, new_title_text):
-    return queries.update_card_title(card_id, new_title_text)
+@app.route("/update-card-title", methods=["PUT"])
+def update_card_title():
+    data = request.get_json()
+    card_id = data['card_id']
+    new_title_text = data['new_title_text']
+    queries.update_card_title(card_id, new_title_text)
 
 
 def main():
