@@ -1,7 +1,7 @@
 import { dataHandler } from "./dataHandler.js";
 import { htmlFactory, htmlTemplates } from "./htmlFactory.js";
 import { domManager } from "./domManager.js";
-import { cardsManager } from "./cardsManager.js";
+import { cardsManager, loadDraggableItems, deleteButtonHandler } from "./cardsManager.js";
 import { columnsManager } from "./columnsManager.js";
 
 export let boardsManager = {
@@ -23,6 +23,7 @@ async function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.currentTarget.dataset.boardId;
     await columnsManager.loadColumns(boardId);
     await cardsManager.loadCards(boardId);
+    loadDraggableItems();
 }
 
 
@@ -40,8 +41,8 @@ async function createCard(clickEvent) {
     const content = cardBuilder(tempCard);
     domManager.addChild(`.board${boardId}-column-content[data-column-id="${tempCard.column_id}"]`,
                 content)
-    // domManager.addEventListener(`.card[data-card-id="${tempCard.id}"]`,
-    //             "click", cardsManager.deleteButtonHandler)
+    domManager.addEventListener(`.card-remove[id="removeCard${tempCard.id}"]`,
+                "click", deleteButtonHandler);
 
     let userInput = document.createElement("input");
     userInput.setAttribute('id',tempCard.id)
