@@ -109,6 +109,15 @@ def update_card_title():
     queries.update_card_title(card_id, new_title_text)
 
 
+@app.route("/update-card-after-moving", methods=["PUT"])
+def update_card_after_moving():
+    data = request.get_json()
+    card_id = data['card_id']
+    column_id = data['column_id']
+    card_order = data['card_order']
+    queries.update_card_after_moving(card_id, column_id, card_order)
+
+
 def main():
     app.run(
         debug=True
