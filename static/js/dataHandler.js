@@ -43,8 +43,8 @@ export let dataHandler = {
         let response = await apiGet(`/get-first-column-from-board/${boardId}`);
         return response
     },
-    deleteCard: async function (cardID) {
-        let response = await apiDelete(`/delete-card/${cardID}`)
+    deleteCard: async function (cardId) {
+        let response = await apiDelete(`/delete-card/${cardId}`)
     },
     updateCardTitle: async function (cardID, newTitleText) {
         let body_content = {
@@ -52,6 +52,14 @@ export let dataHandler = {
             "new_title_text": newTitleText,
         };
         let response = await apiPut(`/update-card-title`, body_content)
+    },
+    updateCardOrder: async function (cardOrderNumber, cardId, columnId) {
+        let body_content = {
+            "card_order": cardOrderNumber,
+            "card_id": cardId,
+            "column_id": columnId,
+        };
+        let response = await apiPut(`/update-card-after-moving`, body_content)
     }
 };
 

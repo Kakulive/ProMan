@@ -62,6 +62,30 @@ export function loadDraggableItems() {
         draggable.addEventListener('dragend', () => {
             draggable.classList.remove('dragging')
         })
+
+        draggable.addEventListener('drop', (ev) => {
+            // let currentColumn = draggable.parentElement
+            // let columnId = draggable.parentElement.parentElement.id.slice(6);
+            // let draggableOrderNumber = 1;
+            // let draggableId = ev.currentTarget.id.slice(4);
+            // let allColumnCards = currentColumn.children
+            // for (let i = 0; i < allColumnCards.length; i++) {
+            //     if (allColumnCards[i].id !== draggable.id){
+            //         draggableOrderNumber ++
+            //     } else {
+            //         break
+            //     }
+            // }
+            // dataHandler.updateCardOrder(draggableOrderNumber, draggableId, columnId)
+
+            let currentColumn = draggable.parentElement
+            let columnId = draggable.parentElement.parentElement.id.slice(6);
+            for (let i = 0; i<currentColumn.childElementCount; i++){
+                let draggableOrderNumber = i + 1;
+                let draggableId = currentColumn.childNodes[i].id.slice(4);
+                dataHandler.updateCardOrder(draggableOrderNumber, draggableId, columnId)
+            }
+        })
     })
 
     containers.forEach(container => {
@@ -72,7 +96,7 @@ export function loadDraggableItems() {
             // console.log(container)  --> used for testing
             // console.log(afterElement)  --> used for testing
             if (afterElement == null) {
-                container.appendChild(draggable)
+                 container.children[1].appendChild(draggable)
             } else {
                 // container.insertBefore(draggable, afterElement) --> This should work, but doesn't, idk why lol
                 afterElement.insertAdjacentElement('beforebegin', draggable)
