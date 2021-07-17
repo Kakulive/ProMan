@@ -13,40 +13,40 @@
 {% block body %}
     <div id="root"></div>
 
-    {#    <!-- Register Modal -->#}
-    {#    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-    {#        <div class="modal-dialog">#}
-    {#            <div class="modal-content">#}
-    {#                <div class="modal-header">#}
-    {#                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>#}
-    {#                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
-    {#                </div>#}
-    {#                <div class="modal-body">#}
-    {#                    ...#}
-    {#                </div>#}
-    {#                <div class="modal-footer">#}
-    {#                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
-    {##}
-    {#    <!-- Register Modal Script -->#}
-    {#    <script>#}
-    {#        function activateRegisterModal(){#}
-    {#            $.ajax({#}
-    {#                url:'/register',#}
-    {#                type:'GET',#}
-    {#                success: function (data){#}
-    {#                    $('.modal-body').html(data);#}
-    {#                    $('#registerModal').modal('show');#}
-    {#                },#}
-    {#                error: function (msg){#}
-    {#                    alert(msg);#}
-    {#                }#}
-    {#            })#}
-    {#        }#}
-    {#    </script>#}
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal Script -->
+    <script>
+        function activateRegisterModal(){
+            $.ajax({
+                url:'/register',
+                type:'GET',
+                success: function (data){
+                    $('#registerModal .modal-body').html(data);
+                    $('#registerModal').modal('show');
+                },
+                error: function (msg){
+                    alert(msg);
+                }
+            })
+        }
+    </script>
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -73,7 +73,7 @@
                 url:'/login',
                 type:'GET',
                 success: function (data){
-                    $('.modal-body').html(data);
+                    $('#loginModal .modal-body').html(data);
                     $('#loginModal').modal('show');
                 },
                 error: function (msg){

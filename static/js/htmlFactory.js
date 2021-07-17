@@ -20,10 +20,11 @@ export function htmlFactory(template) {
 
 function boardBuilder(board) {
     return `<div class="board-container">
-                <section class="board" data-board-id="${board.id}" id="board${board.id}">
+                <section class="board${board.id}" data-board-id="${board.id}" id="board${board.id}">
                     <div class="board-header">
                         <span class="board-title">${board.title}</span>
                         <button class="board-add" data-board-id="${board.id}">Add Card</button>
+                        <button class="column-add" data-board-id="${board.id}">Add Column</button>
                         <button class="board-toggle" data-board-id="${board.id}"><i class="fas fa-chevron-down"></i></button>
                     </div>
                     <div class="board-columns" data-board-id="${board.id}"></div>

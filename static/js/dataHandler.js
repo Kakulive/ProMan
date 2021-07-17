@@ -35,8 +35,20 @@ export let dataHandler = {
         let response = await apiPost(`/create-new-card`, body_content);
         // creates new card, saves it and calls the callback function with its data
     },
+    createNewColumn: async function (boardId, newColumnName, columnId) {
+        let body_content = {
+            "column_name": newColumnName,
+            "board_id": boardId,
+            "column_id": columnId
+        };
+        let response = await apiPost(`/create-new-column`, body_content);
+    },
     getLatestCardId: async function () {
         let response = await apiGet(`/get-latest-card-id`);
+        return response
+    },
+    getLatestColumnId: async function () {
+        let response = await apiGet(`/get-latest-column-id`);
         return response
     },
     getFirstColumnFromBoard: async function (boardId) {

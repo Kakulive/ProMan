@@ -112,8 +112,16 @@ def get_latest_card_id():
     return data_manager.execute_select(
         """
         SELECT max(id)
-        FROM cards
-        ;
+        FROM cards;
+        """
+    )[0]['max']
+
+
+def get_latest_column_id():
+    return data_manager.execute_select(
+        """
+        SELECT max(id)
+        FROM columns;
         """
     )[0]['max']
 
@@ -143,6 +151,16 @@ def save_card(board_id, card_title, column_id):
         (%(board_id)s, %(status_id)s, %(title)s, %(card_order)s, %(column_id)s); 
         """, {"board_id": int(board_id), "status_id": status_id, "title": card_title,
               "card_order": max_card_order, "column_id": int(column_id)})
+
+
+def create_new_column(board_id, status_id, column_order):
+    data_manager.execute_update(
+        """
+        INSERT INTO columns 
+        (, board_id, status_id, column_order)
+        VALUES 
+        (%(board_id)s, %(status_id)s, %(column_order)s); 
+        """, {"board_id": board_id, "status_id": status_id, "column_order": column_order})
 
 
 def delete_card(card_id):
@@ -176,3 +194,35 @@ def update_card_after_moving(card_id, column_id, card_order):
         SET column_id = %(column_id)s, card_order = %(card_order)s
         WHERE id = %(card_id)s;
         """, {"card_id": card_id, "column_id": column_id, "card_order": card_order})
+
+
+def get_status_id(column_name):
+    status_id = data_manager.execute_select(
+        """
+        SELECT id
+        FROM statuses
+        WHERE status = %(column_name)s;
+        """, {"column_name": column_name})
+    return status_id[0]['id']
+
+
+def add_new_status(column_name):
+    data_manager.execute_update(
+        """
+        INSERT INTO statuses 
+        (status)
+        VALUES 
+        (%(column_name)s); 
+        """, {"column_name": column_name})
+
+
+def get_last_column_number(board_id):
+    max_order = data_manager.execute_select(
+        """
+        SELECT max(column_order)
+        FROM columns
+        WHERE board_id = %(board_id)s;
+        """, {"board_id": board_id})[0]['max']
+    return max_order
+
+

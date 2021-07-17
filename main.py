@@ -84,10 +84,35 @@ def create_new_card():
     queries.save_card(board_id, card_title, column_id)
 
 
+@app.route("/create-new-column", methods=["POST"])
+def create_new_column():
+    data = request.get_json()
+    board_id = int(data['board_id'])
+    column_name = data['column_name']
+    try:
+        column_order = queries.get_last_column_number(board_id) + 1
+    except:
+        column_order = 1
+
+    try:
+        status_id = queries.get_status_id(column_name)
+        queries.create_new_column(board_id, status_id, column_order)
+    except:
+        queries.add_new_status(column_name)
+        status_id = queries.get_status_id(column_name)
+        queries.create_new_column(board_id, status_id, column_order)
+
+
 @app.route("/get-latest-card-id")
 @json_response
 def get_latest_card_id():
     return queries.get_latest_card_id()
+
+
+@app.route("/get-latest-column-id")
+@json_response
+def get_latest_column_id():
+    return queries.get_latest_column_id()
 
 
 @app.route("/get-first-column-from-board/<board_id>")
