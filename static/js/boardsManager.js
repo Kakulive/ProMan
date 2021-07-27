@@ -85,6 +85,7 @@ async function createCard(clickEvent) {
 function createColumn(clickEvent){
     const boardId = clickEvent.target.dataset.boardId;
     let userInput = document.createElement("input");
+    userInput.setAttribute('placeholder','Column name')
     let currentBoardButton = clickEvent.target.parentElement;
     currentBoardButton.appendChild(userInput)
     userInput.addEventListener("keydown", function(event) {

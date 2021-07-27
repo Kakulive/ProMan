@@ -157,7 +157,7 @@ def create_new_column(board_id, status_id, column_order):
     data_manager.execute_update(
         """
         INSERT INTO columns 
-        (, board_id, status_id, column_order)
+        (board_id, status_id, column_order)
         VALUES 
         (%(board_id)s, %(status_id)s, %(column_order)s); 
         """, {"board_id": board_id, "status_id": status_id, "column_order": column_order})
