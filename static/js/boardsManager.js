@@ -15,19 +15,21 @@ export let boardsManager = {
                 "click", showHideButtonHandler);
             domManager.addEventListener(`.board-add[data-board-id="${board.id}"]`,
                 "click", createCard);
+            domManager.addEventListener(`.column-add[data-board-id="${board.id}"]`,
+                "click", createColumn);
         }
     },
 }
 
 async function showHideButtonHandler(clickEvent) {
-    let columns_tag = clickEvent.currentTarget.parentNode.nextElementSibling
-    if (columns_tag.hasChildNodes() === false) {
+    let columnsTag = clickEvent.currentTarget.parentNode.nextElementSibling
+    if (columnsTag.hasChildNodes() === false) {
         const boardId = clickEvent.currentTarget.dataset.boardId;
         await columnsManager.loadColumns(boardId);
         await cardsManager.loadCards(boardId);
         loadDraggableItems();
     } else {
-        removeAllChildNodes(columns_tag)
+        removeAllChildNodes(columnsTag)
     }
 }
 
@@ -74,6 +76,36 @@ async function createCard(clickEvent) {
             newCard.appendChild(titleDivToBeAdded)
             newCard.removeChild(newCard.childNodes[4]) //removes the input form
             dataHandler.createNewCard(titleText, boardId, tempCard.column_id)
+        } else if (event.keyCode === 27){
+            newCard.outerHTML = "";
+        }
+    })
+}
+
+function createColumn(clickEvent){
+    const boardId = clickEvent.target.dataset.boardId;
+    let userInput = document.createElement("input");
+    userInput.setAttribute('placeholder','Column name')
+    let currentBoardButton = clickEvent.target.parentElement;
+    currentBoardButton.appendChild(userInput)
+    userInput.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            const newColumnName = userInput.value;
+            const columnId = dataHandler.getLatestColumnId();
+            dataHandler.createNewColumn(boardId, newColumnName, columnId)
+            userInput.remove()
+            let column = {
+                id: columnId,
+                status: newColumnName,
+            }
+            const columnBuilder = htmlFactory(htmlTemplates.column);
+            const content = columnBuilder(boardId, column)
+            domManager.addChild(`.board-columns[data-board-id="${boardId}"]`, content)
+
+        } else if (event.keyCode === 27) {
+            let unusedInput = event.target;
+            unusedInput.remove()
         }
     })
 }

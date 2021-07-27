@@ -32,7 +32,7 @@ function updateCardTitle(clickEvent) {
     const cardID = titleToUpdate.id.slice(9);
     const originalTitle = titleToUpdate.innerText;
     let userInput = document.createElement("input");
-    userInput.placeholder = originalTitle;
+    userInput.value = originalTitle;
     titleToUpdate.innerHTML= "";
     titleToUpdate.appendChild(userInput);
 
@@ -46,7 +46,6 @@ function updateCardTitle(clickEvent) {
         else if (event.keyCode === 27) {
             titleToUpdate.innerHTML= originalTitle;
         }
-
     })
 }
 
@@ -64,20 +63,6 @@ export function loadDraggableItems() {
         })
 
         draggable.addEventListener('drop', (ev) => {
-            // let currentColumn = draggable.parentElement
-            // let columnId = draggable.parentElement.parentElement.id.slice(6);
-            // let draggableOrderNumber = 1;
-            // let draggableId = ev.currentTarget.id.slice(4);
-            // let allColumnCards = currentColumn.children
-            // for (let i = 0; i < allColumnCards.length; i++) {
-            //     if (allColumnCards[i].id !== draggable.id){
-            //         draggableOrderNumber ++
-            //     } else {
-            //         break
-            //     }
-            // }
-            // dataHandler.updateCardOrder(draggableOrderNumber, draggableId, columnId)
-
             let currentColumn = draggable.parentElement
             let columnId = draggable.parentElement.parentElement.id.slice(6);
             for (let i = 0; i<currentColumn.childElementCount; i++){

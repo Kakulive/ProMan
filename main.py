@@ -82,12 +82,40 @@ def create_new_card():
     card_title = data['card_title']
     column_id = data['column_id']
     queries.save_card(board_id, card_title, column_id)
+    return {"status": "success"}
+
+
+@app.route("/create-new-column", methods=["POST"])
+def create_new_column():
+    data = request.get_json()
+    board_id = int(data['board_id'])
+    column_name = data['column_name']
+    try:
+        column_order = queries.get_last_column_number(board_id) + 1
+    except:
+        column_order = 1
+
+    try:
+        status_id = queries.get_status_id(column_name)
+        queries.create_new_column(board_id, status_id, column_order)
+        return {"status": "success"}
+    except:
+        queries.add_new_status(column_name)
+        status_id = queries.get_status_id(column_name)
+        queries.create_new_column(board_id, status_id, column_order)
+        return {"status": "success"}
 
 
 @app.route("/get-latest-card-id")
 @json_response
 def get_latest_card_id():
     return queries.get_latest_card_id()
+
+
+@app.route("/get-latest-column-id")
+@json_response
+def get_latest_column_id():
+    return queries.get_latest_column_id()
 
 
 @app.route("/get-first-column-from-board/<board_id>")
@@ -99,6 +127,7 @@ def get_first_column_from_board(board_id):
 @app.route("/delete-card/<card_id>", methods=["DELETE"])
 def delete_card(card_id):
     queries.delete_card(card_id)
+    return {"status": "success"}
 
 
 @app.route("/update-card-title", methods=["PUT"])
@@ -107,6 +136,7 @@ def update_card_title():
     card_id = data['card_id']
     new_title_text = data['new_title_text']
     queries.update_card_title(card_id, new_title_text)
+    return {"status": "success"}
 
 
 @app.route("/update-card-after-moving", methods=["PUT"])
@@ -116,6 +146,7 @@ def update_card_after_moving():
     column_id = data['column_id']
     card_order = data['card_order']
     queries.update_card_after_moving(card_id, column_id, card_order)
+    return {"status": "success"}
 
 
 def main():
